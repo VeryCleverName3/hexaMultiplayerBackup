@@ -1,0 +1,377 @@
+<html>
+	<head>
+		<title>Hexa</title>
+		<link rel="icon" type = "png" href="greyhex.png" />
+		<meta name = "apple-mobile-web-app-capable" content = "yes">
+		<link rel = "apple-touch-icon" href = "hexalogo.jpg">
+		<meta name = "viewport" content = "user-scalable=no">
+		<style>
+		@font-face {
+		font-family: Yee;
+		src: url(Assets/MavenPro-Bold.ttf);
+		}
+
+		@font-face {
+		font-family: Yeee;
+		src: url(Assets/MavenPro-Medium.ttf);
+		}
+		@keyframes rotate{
+		from{
+			transform: rotate(0deg);
+		}
+		to{
+			transform: rotate(30deg);
+		}
+		}
+		@keyframes unrotate{
+		from{
+			transform: rotate(30deg);
+		}
+		to{
+			transform: rotate(0deg);
+		}
+		}
+		@keyframes bigify{
+		from{
+			transform: scale(1, 1);
+		}
+		to{
+			transform: scale(1.05, 1.05);
+		}
+		}
+		@keyframes unbigify{
+		from{
+			transform: scale(1.05, 1.05);
+		}
+		to{
+			transform: scale(1, 1);
+		}
+		}
+		@keyframes bigify2{
+		from{
+			transform: scale(1, 1);
+		}
+		to{
+			transform: scale(1.1, 1.1);
+		}
+		}
+		@keyframes unbigify2{
+		from{
+			transform: scale(1.1, 1.1);
+		}
+		to{
+			transform: scale(1, 1);
+		}
+		}
+		@keyframes rotateHourglass{
+		22.22222222%{
+			transform: scaleY(1);
+		}
+		27.777777777%{
+			transform: scaleY(0);
+		}
+		33.3333333333%{
+			transform: scaleY(1);
+		}
+		72.2222222222%{
+			transform: scaleY(1);
+		}
+		77.7777777777%{
+			transform: scaleY(0);
+		}
+		83.3333333333%{
+			transform: scaleY(1);
+		}
+		99.99999999999999%{
+			transform: scaleY(1);
+		}
+		100%{
+			transform: scaleY(1);
+		}
+		}
+		@keyframes flipYDimensionThingy{
+		0%{
+			transform: scaleY(1);
+		}
+		28.232323232323%{
+			transform: scaleY(-1);
+		}
+		78.23%{
+			transform: scaleY(-1);
+		}
+		100%{
+			transform: scaleY(1);
+		}
+		}
+		body{
+			margin: 0;
+			padding: 0;
+			zoom: 0.25;
+			-webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Safari */
+			-khtml-user-select: none; /* Konqueror HTML */
+			-moz-user-select: none; /* Firefox */
+			-ms-user-select: none; /* Internet Explorer/Edge */
+			user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+		}
+		#mainCanvas{
+			padding-left: 0;
+			padding-right: 0;
+			margin-left: auto;
+			margin-right: auto;
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+		#BackButton{
+		position: absolute;
+		left: 3.3vw;
+		top: 5vh;
+		height: 20vh;
+		width: 0vh;
+		}
+		#ReplayButton{
+		position: absolute;
+		left: 18.3vw;
+		top: 5vh;
+		height: 20vh;
+		width: 0vh;
+		}
+		#scoreboard{
+		position: absolute;
+		font-size: 3vw;
+		top: 40vh;
+		left: 10vh;
+		border: solid 0vh;
+		background-color: rgba(255, 255, 255, 0.75);
+		border-radius: 3vh;
+		border-color: rgba(255, 255, 255, 0.75);
+		font-family: Yee;
+		height: 126vh;
+		width: 43vw;
+		line-height: 12.5vh;
+		box-shadow: 2vh 2vh 2vh rgba(0, 0, 0, 0.5);
+		}
+		.colorName{
+		padding-left: 4.5vw;
+		opacity: 1;
+		}
+		#playButton{
+		position: absolute;
+		top: 130vh;
+		left: 65vw;
+		}
+		#actualPlayButton{
+		width: 40vh;
+		height: 40vh;
+		}
+		#actualPlayButton:hover{
+		animation-name: bigify;
+		animation-duration: 0.5s;
+		animation-timing-function: ease;
+		transform: scale(1.05, 1.05);
+		}
+		#actualPlayButton:not(:hover){
+		animation-name: unbigify;
+		animation-duration: 0.5s;
+		animation-timing-function: ease;
+		}
+		#optionsButton{
+		position: fixed;
+		top: 40px;
+		right: 0px;
+		width: 7.5%;
+		height: 7.5%;
+		}
+		#optionsButton:hover{
+		transform: rotate(30deg);
+		animation-name: rotate;
+		animation-duration: 0.5s;
+		animation-timing-function: ease;
+		}
+		#optionsButton:not(:hover){
+		animation-name: unrotate;
+		animation-duration: 0.5s;
+		animation-timing-function: ease;
+		}
+		#optionsScreen{
+		display: none;
+		margin: auto;
+		position: fixed;
+		width: 75%;
+		height: 84%;
+		font: 4vh Yeee;
+		border-radius: 100px;
+		z-index: 9999;
+		background-color: #eeeeee;
+		text-align: center;
+		box-shadow: 2vw 2vh 5vh rgba(0, 0, 0, 0.5);
+		left: 50%;
+		top: 7.5%;
+		margin-left: -37.5%;
+		text-align: left;
+		}
+		#optionsScreen h1{
+		text-align: center;
+		margin: auto;
+		margin-top: 2.25%;
+		}
+		#optionsScreenContent{
+		margin-top: 5%;
+		margin-left: 7.5%;
+		}
+		#winScreen{
+		display: none;
+		margin: auto;
+		position: fixed;
+		width: 22.5%;
+		border-radius: 20px;
+		z-index: 9999;
+		background-color: #f0f0f0;
+		text-align: center;
+		box-shadow: 2vw 2vh 5vh rgba(0, 0, 0, 0.5);
+		left: 76.25%;
+		top: 42.5%;
+		margin-left: -37.5%;
+		font-size: 10vh;
+		opacity: 1;
+		font-family: Yee;
+		text-align: center;
+		padding-top: 2vh;
+		padding-bottom: 2vh;
+		}
+		#winText{
+		margin: auto;
+		text-align: center;
+		vertical-align: middle;
+		}
+		input{
+		height: 4vh;
+		width: 4vh;
+		margin-top: 1.75vh;
+		}
+		#turnTimerBox{
+		display: none;
+		}
+		#actualTurnTimerBox{
+		font-size: 5vh;
+		width: 20%;
+		height: 5%;
+		margin-top: 0;
+		font-family: Yee;
+		text-align: center;
+		border-radius: 0px;
+		}
+		#chessTimerBox{
+		display: none;
+		}
+		#actualChessTimerBox{
+		font-size: 5vh;
+		width: 20%;
+		height: 5%;
+		margin-top: 0;
+		font-family: Yee;
+		text-align: center;
+		border-radius: 0px;
+		}
+		.flexBox{
+		display: flex;
+		}
+		#timerContainer{
+		position: fixed;
+		right: 15%;
+		top: 40%;
+		display: none;
+		font-family: Yee;
+		font-size: 13vh;
+		}
+		#timer{
+		transform: scaleY(1);
+		animation-name: rotateHourglass;
+		animation-duration: 4s;
+		animation-iteration-count: infinite;
+		animation-timing-function: ease-in-out;
+		}
+		#timerAgain{
+		animation-name: flipYDimensionThingy;
+		animation-duration: 4s;
+		animation-iteration-count: infinite;
+		animation-timing-function: ease-in-out;
+		}
+		#timerImage{
+		height: 20vh;
+		width: 20vh;
+		}
+		#time{
+		text-align: left;
+		position: fixed;
+		right: 10%;
+		top: 40.85%;
+		display: none;
+		font-family: Yee;
+		font-size: 13vh;
+		}
+		.chessTime{
+		margin-left: auto;
+		padding-right: 4.5vw;
+		}
+		#x{
+		width: 6vh;
+		height: 6vh;
+		position: absolute;
+		right: 10vh;
+		top: 10vh;
+		}
+		#x:hover{
+		animation-name: bigify2;
+		animation-duration: 0.3s;
+		animation-timing-function: ease;
+		transform: scale(1.1, 1.1);
+		}
+		#x:not(:hover){
+		animation-name: unbigify2;
+		animation-duration: 0.3s;
+		animation-timing-function: ease;
+		}
+		</style>
+	</head>
+	<body id="body">
+		<a href = "index.html"><img title="Back" src="Assets/BackButton.svg" id="BackButton" /></a>
+		<a href = "javascript:replay();"><img title="Replay" src="Assets/ReplayButton.svg" id="ReplayButton"></a>
+		<canvas id="mainCanvas"></canvas>
+		<div id="playButton"><a href="javascript:start();"><img src="Assets/PlayButtonBetter.svg" alt="Play" id="actualPlayButton"></img></a></div>
+		<div id="scoreboard" hidden="true">
+		<h1 style="text-align:center;margin-top:6.5vh">SCORES</h1>
+		<div class="flexBox"><div id="score0" class="colorName">Red: <span class="score">0</span></div><div class="chessTime"></div></div>
+		<div class="flexBox"><div id="score1" class="colorName">Blue: <span class="score">0</span></div><div class="chessTime"></div></div>
+		<div class="flexBox"><div id="score2" class="colorName">Yellow: <span class="score">0</span></div><div class="chessTime"></div></div>
+		<div class="flexBox"><div id="score3" class="colorName">Green: <span class="score">0</span></div><div class="chessTime"></div></div>
+		<div class="flexBox"><div id="score4" class="colorName">Purple: <span class="score">0</span></div><div class="chessTime"></div></div>
+		<div class="flexBox"><div id="score5" class="colorName">Cyan: <span class="score">0</span></div><div class="chessTime"></div></div>
+		<div class="flexBox"><div id="score6" class="colorName">Unfilled: <span class="score">0</span></div><div class="chessTime"></div></div>
+		</div>
+		<a href="javascript:openOptions();"><img id="optionsButton" src="Assets/OptionsButton.svg"></img></a>
+		<div id="optionsScreen">
+		<h1>Options:</h1>
+		<div id="optionsScreenContent">
+			<h2>
+			<div class="flexBox timeStuff"><input type="checkbox" onclick="javascript:turnTimerBox()" id="turnTimerCheckBox"></input> &nbsp; Turn timer &nbsp;<div id="turnTimerBox"><input id="actualTurnTimerBox" type="text" value="15">&nbsp;s</input></div></div>
+			</h2>
+			<h2>
+			<div class="flexBox timeStuff"><input type="checkbox" onclick="javascript:chessTimerBox()" id="chessTimerCheckBox"></input> &nbsp; Chess timer &nbsp;<div id="chessTimerBox"><input id="actualChessTimerBox" type="text" value="3">&nbsp;m</input></div></div>
+			</h2>
+			<a  href="javascript:openOptions();"><img id = "x" src="Assets/x.svg"></img></a>
+		</div>
+		</div>
+		<div id="winScreen">
+
+		</div>
+		<script src = "hexaGameScript.js">
+		</script>
+		<div id="timerContainer"><div id = "timer"><div id="timerAgainYee"><img id="timerImage" src="Assets/Hourglass2.svg"></img></div></div></div>
+		<div id="time"></div>
+	</body>
+</html>

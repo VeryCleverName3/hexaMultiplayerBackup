@@ -1,0 +1,187 @@
+<html>
+    <head>
+        <style>
+            @font-face {
+                font-family: Yee;
+                src: url(Assets/Futura-Bold.otf);
+            }
+            @font-face {
+                font-family: Yeee;
+                src: url(Assets/Futura-Weird.otf);
+            }
+            h1{
+                color: #5f5e5e;
+                font: 5vh Yee;
+                text-decoration: bold;
+                margin-block-end: 0em;
+            }
+            h2{
+                color: #5f5e5e;
+                font: 3vh Yee;
+                text-decoration: bold;
+                margin-block-start: 0px;
+                margin-block-end: 5px;
+            }
+            p{
+                color: #000000;
+                font: 2vh Yee;
+                text-decoration: bold;
+                margin-block-start: 0px;
+                margin-block-end: 0px;
+            }
+            table{
+                margin-left: 5%;
+                border-collapse: collapse;
+            }
+            #leftHalf{
+                width: 57.5%;
+                padding-top: 0px;
+            }
+            canvas{
+                width: 100%;
+                height: 98vh;
+            }
+            body{
+                margin: 0px;
+                padding: 0px;
+                height: 100%;
+                width: 100%;
+            }
+            #textbox1{
+                position: absolute;
+                font: 1.9vh Yeee;
+                top: 45vh;
+                right: 11vw;
+            }
+            #bold{
+                font: 1.6vh Yee;
+            }
+            #textbox2{
+                position: absolute;
+                font: 1.9vh Yeee;
+                top: 82vh;
+                right: 11vw;
+            }
+        </style>
+    </head>
+    <body id="body">
+        <table>
+            <tr>
+                <td id="leftHalf">
+                    <h1>How To Play</h1>
+                    <br>
+                    <h2>On Your Turn</h2>
+                    <p>Click on of the light grey hexagons to flip it to your color. Dark grey hexagons are dead spaces and cannot be played in. The background color shows whose turn it is.</p>
+                    <br>
+                    <h2>Flipping Hexagons</h2>
+                    <p>At the end of each turn, the seven hexagons around and including each hexagon are evaluated. The hexagon then flips to the color that has a majority out of those seven. In case of a tie, or if two hexagons would flip at the same time, priority is given to the color of the player who played most recently.</p>
+                    <br>
+                    <h2>Winning</h2>
+                    <p>The game continues until all hexagons are filled. Whichever player controls the most hexagons at the end of the game wins.</p>
+                </td>
+                <td>
+                    <canvas id="drawCanvas"></canvas>
+                </td>
+                <div id = "textbox1">
+                    <span id="bold"><i>fig. 1.</i></span> Because there are one red<br> and one blue hexagon, the central<br> hexagons remains blue.
+                </div>
+                <div id = "textbox2">
+                    <span id="bold"><i>fig. 2.</i></span> Because the red hexagons <br> outnumber the blue hexagon two <br> to one, the central hexagon flips <br> to red.
+                </div>
+            </tr>
+        </table>
+    </body>
+    <script>
+    document.getElementById("drawCanvas").doStuff = ()=>{
+        var c = document.getElementById("drawCanvas");
+        c.width = document.getElementById("body").clientWidth * 0.4 * 2;
+        c.height = document.getElementById("body").clientHeight * 2;
+        var ctx = c.getContext("2d");
+
+        var hexImgs = [new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image];
+        hexImgs[0].src = "greyhex.svg";
+        hexImgs[1].src = "Assets/RedHex.svg";
+        hexImgs[2].src = "Assets/BlueHex.svg";
+        hexImgs[3].src = "darkgreyhex.svg";
+        hexImgs[4].src = "Assets/YellowHex.svg";
+        hexImgs[5].src = "Assets/GreenHex.svg";
+        hexImgs[6].src = "Assets/PurpleHex.svg";
+        hexImgs[7].src = "Assets/LightBlueHex.svg";
+
+        var size = c.height / 5;
+
+        var change = 0;
+
+        function drawMain(){
+            ctx.drawImage(hexImgs[2], c.width / 3, c.height / 4, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) - c.height / 15, c.height / 4, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) + c.height / 15, c.height / 4, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[1], (c.width) * (1 / 3) - c.height / 30, c.height / 4 - c.height / 17, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) + c.height / 30, c.height / 4 - c.height / 17, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) - c.height / 30, c.height / 4 + c.height / 17, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) + c.height / 30, c.height / 4 + c.height / 17, c.height / 5, c.height / 5);
+
+            ctx.drawImage(hexImgs[2], c.width / 3, c.height * 2.5 / 4, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) - c.height / 15, c.height * 2.5 / 4, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) + c.height / 15, c.height * 2.5 / 4, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[1], (c.width) * (1 / 3) - c.height / 30, c.height * 2.5 / 4 - c.height / 17, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) + c.height / 30, c.height * 2.5 / 4 - c.height / 17, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) - c.height / 30, c.height * 2.5 / 4 + c.height / 17, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) + c.height / 30, c.height * 2.5 / 4 + c.height / 17, c.height / 5, c.height / 5);
+        }
+        function drawFrame(chg, mode){
+            ctx.clearRect(0, 0, c.width, c.height);
+            ctx.drawImage(hexImgs[2], c.width / 3, c.height / 4, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) - c.height / 15, c.height / 4, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) + c.height / 15, c.height / 4, c.height / 5, c.height / 5);
+            if(mode == 1){
+                ctx.drawImage(hexImgs[(chg > 0.5 * size)?1:0], (c.width) * (1 / 3) - c.height / 30 + chg, c.height / 4 - c.height / 17, c.height / 5 - 2 * chg, c.height / 5);
+            } else {
+                ctx.drawImage(hexImgs[(mode>1)?1:0], (c.width) * (1 / 3) - c.height / 30, c.height / 4 - c.height / 17, c.height / 5, c.height / 5);
+            }
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) + c.height / 30, c.height / 4 - c.height / 17, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) - c.height / 30, c.height / 4 + c.height / 17, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) + c.height / 30, c.height / 4 + c.height / 17, c.height / 5, c.height / 5);
+
+            if(mode == 2){
+                ctx.drawImage(hexImgs[(chg > 0.5*size)?1:2], c.width / 3 + chg, c.height * 2.5 / 4, c.height / 5 - 2 * chg, c.height / 5);
+            }
+            else {
+                ctx.drawImage(hexImgs[(mode > 2)?1:2], c.width / 3, c.height * 2.5 / 4, c.height / 5, c.height / 5);
+            }
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) - c.height / 15, c.height * 2.5 / 4, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) + c.height / 15, c.height * 2.5 / 4, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[1], (c.width) * (1 / 3) - c.height / 30, c.height * 2.5 / 4 - c.height / 17, c.height / 5, c.height / 5);
+            if(mode == 1){
+                ctx.drawImage(hexImgs[(chg > 0.5 * size)?1:0], (c.width) * (1 / 3) + c.height / 30 + chg, c.height * 2.5 / 4 - c.height / 17, c.height / 5 - 2 * chg, c.height / 5);
+            } else {
+                ctx.drawImage(hexImgs[(mode > 1?1:0)], (c.width) * (1 / 3) + c.height / 30, c.height * 2.5 / 4 - c.height / 17, c.height / 5, c.height / 5);
+            }
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) - c.height / 30, c.height * 2.5 / 4 + c.height / 17, c.height / 5, c.height / 5);
+            ctx.drawImage(hexImgs[0], (c.width) * (1 / 3) + c.height / 30, c.height * 2.5 / 4 + c.height / 17, c.height / 5, c.height / 5);
+        }
+
+        hexImgs[7].onload = ()=>{
+            drawMain(); var mode = 0;
+            setInterval(()=>{
+                drawFrame(change * size, mode);
+                change = nonLinearTransform(change);
+                if(change >= 1 || change == undefined){
+                    change = 0;
+                    mode++;
+                }
+
+                if(mode > 4){
+                    mode = 0;
+                }
+            }, 1000/60);
+        }
+
+        function nonLinearTransform(n){
+            with(Math){
+                return (-(cos((2/PI * acos(sqrt(-(n-1)))+0.02)*PI/2)**2) + 1);
+            }
+        }
+    }
+    </script>
+</html>
